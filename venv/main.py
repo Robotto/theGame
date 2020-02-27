@@ -73,6 +73,7 @@ while not done:
         if enemy.x>gameWindowWidth or enemy.y>gameWindowHeight or enemy.x<0 or enemy.y<0:
             enemies.remove(enemy)
             spawnEnemy()
+        #todo: collisions with shots, and player.
 
     #DRAW GAME OBJECTS:
     screen.fill((0, 0, 0)) #blank screen. (or maybe draw a background)
