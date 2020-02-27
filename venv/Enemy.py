@@ -1,19 +1,19 @@
 import pygame
 
-class ShotClass:
+class EnemyClass:
     x=0
     y=0
     xSpeed=0
     ySpeed=0
-    width=5
-    height=5
-    color=(255 , 255, 255)
+    width=8
+    height=8
+    color=(255 , 0, 128)
 
-    def __init__(self, spawnPosX, spawnPosY, playerSpeedX, playerSpeedY):
+    def __init__(self, spawnPosX, spawnPosY, speedX, speedY):
         self.x = spawnPosX
         self.y = spawnPosY
-        self.xSpeed = playerSpeedX * 3
-        self.ySpeed = playerSpeedY * 3
+        self.xSpeed = speedX
+        self.ySpeed = speedY
 
     def update(self):
         self.x+=self.xSpeed

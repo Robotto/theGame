@@ -6,8 +6,8 @@ class PlayerClass:
     xSpeed=0
     ySpeed=0
     maxSpeed=10
-    width=100
-    height=100
+    width=20
+    height=20
     color=(0, 128, 255)
 
     def __init__(self,xpos,ypos):
