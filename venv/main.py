@@ -24,7 +24,7 @@ def spawnEnemy():
     enemies.append(EnemyClass(rando(0,gameWindowWidth),rando(0,gameWindowHeight),rando(-1,1),rando(-1,1)))
 
 
-for i in range(8):
+for i in range(16):
     spawnEnemy()
 
 while not done:
@@ -47,7 +47,7 @@ while not done:
             if event.key == pygame.K_RIGHT:
                 playerObject.xSpeed += playerObject.maxSpeed
                 #Skud:                          .. Men kun når spilleren bevæger sig:
-            if event.key == pygame.K_SPACE and (playerObject.xSpeed!=0 or playerObject.ySpeed!=0):
+            if event.key == pygame.K_SPACE: #and (playerObject.xSpeed !=0 or playerObject.ySpeed !=0):
                 shots.append(ShotClass(playerObject.x+playerObject.width/2, playerObject.y+playerObject.height/2, playerObject.xSpeed, playerObject.ySpeed))
         #KEY RELEASES:
         if event.type == pygame.KEYUP:
@@ -67,6 +67,7 @@ while not done:
     playerObject.update()
     for shot in shots:
         shot.update()
+
     for enemy in enemies:
         enemy.update()
         #maybe make them bounce? but for now remove them, an spawn another:
@@ -84,6 +85,11 @@ while not done:
 
     for enemy in enemies:
         enemy.draw(screen)
+        for shot in shots:
+            if enemy.hasCollision(shot):
+                enemies.remove(enemy)
+                shots.remove(shot)
+                spawnEnemy()
 
     #do pygame housekeeping:
     pygame.display.flip()
