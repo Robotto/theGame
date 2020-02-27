@@ -5,19 +5,34 @@ class PlayerClass:
     y=0
     xSpeed=0
     ySpeed=0
-    maxSpeed=10
+    maxSpeed=5
     width=20
     height=20
     color=(0, 128, 255)
+    points=0
+    theScreen=0
 
-    def __init__(self,xpos,ypos):
+    def __init__(self,xpos,ypos,screen):
         self.x=xpos
         self.y=ypos
+        self.theScreen=screen
+        self.screenWidth = self.theScreen.get_size()[0]
+        self.screenHeight = self.theScreen.get_size()[1]
 
     def update(self):
         self.x+=self.xSpeed
         self.y+=self.ySpeed
 
-    def draw(self,screen):
-        pygame.draw.rect(screen, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
+        #safety to prevent overshoot:
+        if self.x+self.width > self.screenWidth:
+            self.x = self.screenWidth-self.width
+        if self.y+self.height > self.screenHeight:
+            self.y = self.screenHeight-self.height
+        if self.x<0:
+            self.x=0
+        if self.y<0:
+            self.y=0
+
+    def draw(self):
+        pygame.draw.rect(self.theScreen, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
 

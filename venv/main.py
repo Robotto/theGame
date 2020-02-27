@@ -9,8 +9,6 @@ clock = pygame.time.Clock()
 gameWindowHeight=800
 gameWindowWidth=600
 
-playerObject = PlayerClass(100, 100)
-
 terrain=[] #unused, for now...
 enemies=[]
 shots=[]
@@ -18,10 +16,14 @@ shots=[]
 
 pygame.init()
 screen = pygame.display.set_mode((gameWindowWidth, gameWindowHeight))
+
+
+playerObject = PlayerClass(100, 100, screen)
+
 done = False
 
 def spawnEnemy():
-    enemies.append(EnemyClass(rando(0,gameWindowWidth),rando(0,gameWindowHeight),rando(-1,1),rando(-1,1)))
+    enemies.append(EnemyClass(screen,rando(0,gameWindowWidth),rando(0,gameWindowHeight),rando(-1,1),rando(-1,1)))
 
 
 for i in range(16):
@@ -48,7 +50,7 @@ while not done:
                 playerObject.xSpeed += playerObject.maxSpeed
                 #Skud:                          .. Men kun når spilleren bevæger sig:
             if event.key == pygame.K_SPACE: #and (playerObject.xSpeed !=0 or playerObject.ySpeed !=0):
-                shots.append(ShotClass(playerObject.x+playerObject.width/2, playerObject.y+playerObject.height/2, playerObject.xSpeed, playerObject.ySpeed))
+                shots.append(ShotClass(screen,playerObject.x+playerObject.width/2, playerObject.y+playerObject.height/2, playerObject.xSpeed, playerObject.ySpeed))
         #KEY RELEASES:
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_UP:
@@ -60,36 +62,45 @@ while not done:
             if event.key == pygame.K_RIGHT:
                 playerObject.xSpeed -= playerObject.maxSpeed
     #debug: print out unused pygame events
-    #else:
-    #        print(event)
+    else:
+            print(event)
 
     #UPDATE GAME OBJECTS:
     playerObject.update()
+
     for shot in shots:
         shot.update()
 
     for enemy in enemies:
+        enemyIsDead = False #boolean to check if enemy is dead, and remove it at end of for loop
         enemy.update()
-        #maybe make them bounce? but for now remove them, an spawn another:
+
         if enemy.x>gameWindowWidth or enemy.y>gameWindowHeight or enemy.x<0 or enemy.y<0:
+            enemyIsDead=True
+
+        for shot in shots:
+            if enemy.hasCollision(shot):
+                enemyIsDead=True
+                shots.remove(shot)
+                playerObject.points +=1
+                print('Points:',playerObject.points)
+        if enemy.hasCollision(playerObject):
+            print("OUCH!")
+            playerObject.points=0
+
+        if enemyIsDead:
             enemies.remove(enemy)
             spawnEnemy()
-        #todo: collisions with shots, and player.
 
     #DRAW GAME OBJECTS:
     screen.fill((0, 0, 0)) #blank screen. (or maybe draw a background)
-    playerObject.draw(screen)
+    playerObject.draw()
 
     for shot in shots:
-        shot.draw(screen)
+        shot.draw()
 
     for enemy in enemies:
-        enemy.draw(screen)
-        for shot in shots:
-            if enemy.hasCollision(shot):
-                enemies.remove(enemy)
-                shots.remove(shot)
-                spawnEnemy()
+        enemy.draw()
 
     #do pygame housekeeping:
     pygame.display.flip()
