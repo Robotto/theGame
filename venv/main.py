@@ -15,6 +15,7 @@ shots=[]
 
 
 pygame.init()
+
 screen = pygame.display.set_mode((gameWindowWidth, gameWindowHeight))
 
 
@@ -83,9 +84,11 @@ while not done:
                 enemyIsDead=True
                 shots.remove(shot)
                 playerObject.points +=1
+                enemy.playSound()
                 print('Points:',playerObject.points)
         if enemy.hasCollision(playerObject):
             print("OUCH!")
+
             playerObject.points=0
 
         if enemyIsDead:

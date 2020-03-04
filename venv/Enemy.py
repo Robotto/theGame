@@ -10,6 +10,8 @@ class EnemyClass:
     height=16
     color=(255 , 0, 128)
     theScreen=0
+    pygame.mixer.init(44100, -16, 2, 2048)
+    effect = pygame.mixer.Sound('plingpling.wav')
 
     def __init__(self,screen, spawnPosX, spawnPosY, speedX, speedY):
         self.x = spawnPosX
@@ -28,3 +30,6 @@ class EnemyClass:
 
     def draw(self):
         pygame.draw.rect(self.theScreen, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
+
+    def playSound(self):
+        self.effect.play()
