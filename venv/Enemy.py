@@ -24,10 +24,6 @@ class EnemyClass:
         self.x+=self.xSpeed
         self.y+=self.ySpeed
 
-    def hasCollision(self,shot):
-        if shot.x + shot.width > self.x and shot.x < self.x + self.width and shot.y + shot.height > self.y and shot.y < self.y + self.height:
-            return True
-
     def draw(self):
         pygame.draw.rect(self.theScreen, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
 

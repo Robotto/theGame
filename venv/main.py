@@ -26,6 +26,9 @@ screen = pygame.display.set_mode((gameWindowWidth, gameWindowHeight))
 playerObject = PlayerClass(screen,xpos=100, ypos=100)
 
 done = False
+def collisionChecker(firstGameObject, secondGameObject):
+    if firstGameObject.x + firstGameObject.width > secondGameObject.x and firstGameObject.x < secondGameObject.x + secondGameObject.width and firstGameObject.y + firstGameObject.height > secondGameObject.y and firstGameObject.y < secondGameObject.y + secondGameObject.height:
+        return True
 
 def spawnEnemy():
     enemies.append(EnemyClass(screen,spawnPosX=rando(0,gameWindowWidth),spawnPosY=rando(0,gameWindowHeight),speedX=rando(-1,1),speedY=rando(-1,1)))
@@ -67,8 +70,8 @@ while not done:
             if event.key == pygame.K_RIGHT:
                 playerObject.xSpeed -= playerObject.maxSpeed
     #debug: print out unused pygame events
-    else:
-            print(event)
+    #else:
+    #        print(event)
 
     #UPDATE GAME OBJECTS:
     playerObject.update()
@@ -84,13 +87,13 @@ while not done:
             enemyIsDead=True
 
         for shot in shots:
-            if enemy.hasCollision(shot):
+            if collisionChecker(shot,enemy):
                 enemyIsDead=True
                 shots.remove(shot)
                 playerObject.points +=1
                 enemy.playSound()
                 print('Points:',playerObject.points)
-        if enemy.hasCollision(playerObject):
+        if collisionChecker(enemy,playerObject):
             print("OUCH!")
 
             playerObject.points=0
