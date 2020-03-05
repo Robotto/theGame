@@ -1,4 +1,9 @@
 import pygame
+
+pygame.init()
+pygame.mixer.init(frequency=44100, size=-16, channels=6, buffer=2048)
+
+
 from Player import PlayerClass
 from Shot import ShotClass
 from Enemy import EnemyClass
@@ -14,7 +19,6 @@ enemies=[]
 shots=[]
 
 
-pygame.init()
 
 screen = pygame.display.set_mode((gameWindowWidth, gameWindowHeight))
 
