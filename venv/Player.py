@@ -11,6 +11,8 @@ class PlayerClass:
     color=(0, 128, 255)
     points=0
     theScreen=0
+    collisionSFX = pygame.mixer.Sound('aaw.wav')
+
 
     def __init__(self,screen,xpos,ypos):
         self.x=xpos

@@ -2,7 +2,7 @@ import pygame
 
 pygame.init()
 pygame.mixer.init(frequency=44100, size=-16, channels=6, buffer=2048)
-
+font = pygame.font.Font('freesansbold.ttf', 32)
 
 from Player import PlayerClass
 from Shot import ShotClass
@@ -92,8 +92,9 @@ while not done:
                 shots.remove(shot)
                 playerObject.points +=1
                 enemy.playSound()
-                print('Points:',playerObject.points)
+                #print('Points:',playerObject.points)
         if collisionChecker(enemy,playerObject):
+            playerObject.collisionSFX.play()
             print("OUCH!")
 
             playerObject.points=0
@@ -105,6 +106,11 @@ while not done:
     #DRAW GAME OBJECTS:
     screen.fill((0, 0, 0)) #blank screen. (or maybe draw a background)
     playerObject.draw()
+
+    #Score:                                                 antialias?, color
+    text = font.render('SCORE: ' + str(playerObject.points), True,(0, 255, 0))
+    textRect = text.get_rect() #REKT!
+    screen.blit(text,textRect)
 
     for shot in shots:
         shot.draw()
