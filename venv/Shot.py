@@ -9,12 +9,15 @@ class ShotClass:
     height=5
     color=(255 , 255, 255)
     theScreen=0
+    effect = pygame.mixer.Sound('pew.wav')
+
     def __init__(self,screen, spawnPosX, spawnPosY, playerSpeedX, playerSpeedY):
         self.x = spawnPosX
         self.y = spawnPosY
         self.xSpeed = playerSpeedX * 3
         self.ySpeed = playerSpeedY * 3
         self.theScreen=screen
+        self.effect.play()
 
     def update(self):
         self.x+=self.xSpeed

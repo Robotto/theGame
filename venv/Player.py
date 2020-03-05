@@ -12,7 +12,7 @@ class PlayerClass:
     points=0
     theScreen=0
 
-    def __init__(self,xpos,ypos,screen):
+    def __init__(self,screen,xpos,ypos):
         self.x=xpos
         self.y=ypos
         self.theScreen=screen

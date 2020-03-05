@@ -23,12 +23,12 @@ shots=[]
 screen = pygame.display.set_mode((gameWindowWidth, gameWindowHeight))
 
 
-playerObject = PlayerClass(100, 100, screen)
+playerObject = PlayerClass(screen,xpos=100, ypos=100)
 
 done = False
 
 def spawnEnemy():
-    enemies.append(EnemyClass(screen,rando(0,gameWindowWidth),rando(0,gameWindowHeight),rando(-1,1),rando(-1,1)))
+    enemies.append(EnemyClass(screen,spawnPosX=rando(0,gameWindowWidth),spawnPosY=rando(0,gameWindowHeight),speedX=rando(-1,1),speedY=rando(-1,1)))
 
 
 for i in range(16):
@@ -55,7 +55,7 @@ while not done:
                 playerObject.xSpeed += playerObject.maxSpeed
                 #Skud:                          .. Men kun når spilleren bevæger sig:
             if event.key == pygame.K_SPACE: #and (playerObject.xSpeed !=0 or playerObject.ySpeed !=0):
-                shots.append(ShotClass(screen,playerObject.x+playerObject.width/2, playerObject.y+playerObject.height/2, playerObject.xSpeed, playerObject.ySpeed))
+                shots.append(ShotClass(screen,spawnPosX=playerObject.x+playerObject.width/2, spawnPosY=playerObject.y+playerObject.height/2, playerSpeedX=playerObject.xSpeed, playerSpeedY=playerObject.ySpeed))
         #KEY RELEASES:
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_UP:
