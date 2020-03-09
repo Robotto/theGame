@@ -4,6 +4,9 @@ pygame.init()
 pygame.mixer.init(frequency=44100, size=-16, channels=6, buffer=2048)
 font = pygame.font.Font('freesansbold.ttf', 32)
 
+pygame.mixer.music.load('VicePoint.mp3') #https://soundcloud.com/synthwave80s/01-vice-point
+pygame.mixer.music.play(-1)
+
 from Player import PlayerClass
 from Shot import ShotClass
 from Enemy import EnemyClass

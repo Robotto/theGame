@@ -10,7 +10,6 @@ class PlayerClass:
     height=20
     color=(0, 128, 255)
     points=0
-    theScreen=0
     collisionSFX = pygame.mixer.Sound('aaw.wav')
 
 
@@ -18,7 +17,7 @@ class PlayerClass:
         self.x=xpos
         self.y=ypos
         self.theScreen=screen
-        self.screenWidth = self.theScreen.get_size()[0]
+        self.screenWidth = self.theScreen.get_size()[0] #
         self.screenHeight = self.theScreen.get_size()[1]
 
     def update(self):
