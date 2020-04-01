@@ -40,6 +40,7 @@ def spawnEnemy():
 for i in range(16):
     spawnEnemy()
 
+done = False
 while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -121,7 +122,6 @@ while not done:
     for enemy in enemies:
         enemy.draw()
 
-    #do pygame housekeeping:
     pygame.display.flip()
     clock.tick(60)
 
