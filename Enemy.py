@@ -2,14 +2,11 @@ import pygame
 
 
 class EnemyClass:
-    x=0
-    y=0
-    xSpeed=0
-    ySpeed=0
+
     width=16
     height=16
     color=(255 , 0, 128)
-    theScreen=0
+
 
     effect = pygame.mixer.Sound('plingpling.wav')
 

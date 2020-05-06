@@ -1,8 +1,7 @@
 import pygame
 
 class PlayerClass:
-    x=0
-    y=0
+
     xSpeed=0
     ySpeed=0
     maxSpeed=5
@@ -13,16 +12,22 @@ class PlayerClass:
     collisionSFX = pygame.mixer.Sound('aaw.wav')
 
 
-    def __init__(self,screen,xpos,ypos):
+    def __init__(self,screen,xpos,ypos,terrainCollection):
         self.x=xpos
         self.y=ypos
         self.theScreen=screen
         self.screenWidth = self.theScreen.get_size()[0] #
         self.screenHeight = self.theScreen.get_size()[1]
+        self.terrainCollection=terrainCollection
 
     def update(self):
-        self.x+=self.xSpeed
-        self.y+=self.ySpeed
+
+        self.futureX=self.x+self.xSpeed
+        self.futureY=self.y+self.ySpeed
+
+        if(not self.willCollide()):
+            self.x=self.futureX
+            self.y=self.futureY
 
         #safety to prevent overshoot:
         if self.x+self.width > self.screenWidth:
@@ -37,3 +42,9 @@ class PlayerClass:
     def draw(self):
         pygame.draw.rect(self.theScreen, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
 
+    def willCollide(self):
+        willCollideBoolean=False
+        for tile in self.terrainCollection:
+            if self.futureX + self.width > tile.x and self.futureX < tile.x + tile.width and self.futureY + self.height > tile.y and self.futureY < tile.y + tile.height:
+                willCollideBoolean=True
+        return willCollideBoolean

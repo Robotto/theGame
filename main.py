@@ -10,6 +10,7 @@ pygame.mixer.music.play(-1)
 from Player import PlayerClass
 from Shot import ShotClass
 from Enemy import EnemyClass
+from Terrain import TerrainClass
 
 from random import randint as rando
 clock = pygame.time.Clock()
@@ -17,7 +18,7 @@ clock = pygame.time.Clock()
 gameWindowHeight=800
 gameWindowWidth=600
 
-terrain=[] #unused, for now...
+terrain=[]
 enemies=[]
 shots=[]
 
@@ -33,12 +34,9 @@ except:
 screen = pygame.display.set_mode((gameWindowWidth, gameWindowHeight))
 
 
-playerObject = PlayerClass(screen,xpos=100, ypos=100)
-
-done = False
 def collisionChecker(firstGameObject, secondGameObject):
-    if firstGameObject.x + firstGameObject.width > secondGameObject.x and firstGameObject.x < secondGameObject.x + secondGameObject.width and firstGameObject.y + firstGameObject.height > secondGameObject.y and firstGameObject.y < secondGameObject.y + secondGameObject.height:
-        return True
+        if firstGameObject.x + firstGameObject.width > secondGameObject.x and firstGameObject.x < secondGameObject.x + secondGameObject.width and firstGameObject.y + firstGameObject.height > secondGameObject.y and firstGameObject.y < secondGameObject.y + secondGameObject.height:
+            return True
 
 def spawnEnemy():
     enemies.append(EnemyClass(screen,spawnPosX=rando(0,gameWindowWidth),spawnPosY=rando(0,gameWindowHeight),speedX=rando(-1,1),speedY=rando(-1,1)))
@@ -46,6 +44,16 @@ def spawnEnemy():
 
 for i in range(16):
     spawnEnemy()
+
+def createTerrain():
+    terrain.append(TerrainClass(screen, 200, 200,200,20))
+    terrain.append(TerrainClass(screen, 400, 200,20,200))
+
+createTerrain()
+
+
+playerObject = PlayerClass(screen,xpos=100, ypos=100,terrainCollection=terrain)
+
 
 done = False
 while not done:
@@ -85,6 +93,7 @@ while not done:
     #        print(event)
 
     #UPDATE GAME OBJECTS:
+
     playerObject.update()
 
     for shot in shots:
@@ -132,6 +141,9 @@ while not done:
 
     for enemy in enemies:
         enemy.draw()
+
+    for tile in terrain:
+        tile.draw()
 
     pygame.display.flip()
     clock.tick(60)

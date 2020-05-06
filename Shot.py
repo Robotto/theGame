@@ -1,10 +1,7 @@
 import pygame
 
 class ShotClass:
-    x=0
-    y=0
-    xSpeed=0
-    ySpeed=0
+
     width=5
     height=5
     color=(255 , 255, 255)
