@@ -25,9 +25,21 @@ class PlayerClass:
         self.futureX=self.x+self.xSpeed
         self.futureY=self.y+self.ySpeed
 
-        if(not self.willCollide()):
-            self.x=self.futureX
-            self.y=self.futureY
+        xWillCollide = False
+        yWillCollide = False
+
+        for tile in self.terrainCollection:
+            #if the player is within the x coordinates of a wall tile, and future Y coordinate is inside the wall:
+            if self.x + self.width > tile.x and self.x < tile.x + tile.width and self.futureY + self.height > tile.y and self.futureY < tile.y + tile.height:
+                yWillCollide=True
+            # if the player is within the Y coordinates of a wall tile, and future X coordinate is inside the wall:
+            if self.y + self.height > tile.y and self.y < tile.y + tile.height and self.futureX + self.width > tile.x and self.futureX < tile.x + tile.width:
+                xWillCollide=True
+
+        if not xWillCollide:
+            self.x = self.futureX
+        if not yWillCollide:
+            self.y = self.futureY
 
         #safety to prevent overshoot:
         if self.x+self.width > self.screenWidth:
@@ -43,8 +55,7 @@ class PlayerClass:
         pygame.draw.rect(self.theScreen, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
 
     def willCollide(self):
-        willCollideBoolean=False
-        for tile in self.terrainCollection:
-            if self.futureX + self.width > tile.x and self.futureX < tile.x + tile.width and self.futureY + self.height > tile.y and self.futureY < tile.y + tile.height:
-                willCollideBoolean=True
-        return willCollideBoolean
+        xWillCollideBoolean=False
+        yWillCollideBoolean=False
+
+        return xWillCollideBoolean,yWillCollideBoolean
