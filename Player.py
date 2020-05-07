@@ -53,9 +53,3 @@ class PlayerClass:
 
     def draw(self):
         pygame.draw.rect(self.theScreen, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
-
-    def willCollide(self):
-        xWillCollideBoolean=False
-        yWillCollideBoolean=False
-
-        return xWillCollideBoolean,yWillCollideBoolean
