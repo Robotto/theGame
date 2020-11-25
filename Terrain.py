@@ -2,7 +2,7 @@ import pygame
 
 
 class TerrainClass:
-    color=(114 , 122, 116)
+    color=(100 , 100, 100)
 
     def __init__(self,screen,_x,_y,_width,_height):
         self.theScreen=screen

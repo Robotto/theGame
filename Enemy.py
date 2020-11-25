@@ -1,5 +1,5 @@
 import pygame
-
+import os
 
 class EnemyClass:
 
@@ -7,8 +7,8 @@ class EnemyClass:
     height=16
     color=(255 , 0, 128)
 
-
-    effect = pygame.mixer.Sound('plingpling.wav')
+    sfxPath = os.path.normpath(os.path.join('assets', 'sfx', 'plingpling.wav'))
+    effect = pygame.mixer.Sound(sfxPath)
 
     def __init__(self,screen, spawnPosX, spawnPosY, speedX, speedY):
         self.x = spawnPosX

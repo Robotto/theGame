@@ -1,4 +1,5 @@
 import pygame
+import os
 
 class PlayerClass:
 
@@ -9,7 +10,9 @@ class PlayerClass:
     height=20
     color=(0, 128, 255)
     points=0
-    collisionSFX = pygame.mixer.Sound('aaw.wav')
+
+    sfxPath = os.path.normpath(os.path.join('assets', 'sfx', 'aaw.wav')) #kan også være .ogg eller .mp3
+    collisionSFX = pygame.mixer.Sound(sfxPath)
 
 
     def __init__(self,screen,xpos,ypos,terrainCollection):

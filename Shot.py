@@ -1,12 +1,13 @@
 import pygame
-
+import os
 class ShotClass:
 
     width=5
     height=5
     color=(255 , 255, 255)
-    theScreen=0
-    effect = pygame.mixer.Sound('pew.wav')
+
+    sfxPath = os.path.normpath(os.path.join('assets', 'sfx', 'pew.wav'))
+    effect = pygame.mixer.Sound(sfxPath)
 
     def __init__(self,screen, spawnPosX, spawnPosY, playerSpeedX, playerSpeedY):
         self.x = spawnPosX

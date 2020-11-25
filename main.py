@@ -1,10 +1,11 @@
 import pygame
-
+import os
 pygame.init()
 pygame.mixer.init(frequency=44100, size=-16, channels=6, buffer=2048)
 font = pygame.font.Font('freesansbold.ttf', 32)
 
-pygame.mixer.music.load('VicePoint.mp3') #https://soundcloud.com/synthwave80s/01-vice-point
+musicPath = os.path.normpath(os.path.join('assets', 'music','VicePoint.mp3'))
+pygame.mixer.music.load(musicPath) #https://soundcloud.com/synthwave80s/01-vice-point
 pygame.mixer.music.play(-1)
 
 from Player import PlayerClass
@@ -39,15 +40,16 @@ def collisionChecker(firstGameObject, secondGameObject):
             return True
 
 def spawnEnemy():
-    enemies.append(EnemyClass(screen,spawnPosX=rando(0,gameWindowWidth),spawnPosY=rando(0,gameWindowHeight),speedX=rando(-1,1),speedY=rando(-1,1)))
+    enemies.append(EnemyClass(screen,spawnPosX=rando(0,gameWindowWidth),spawnPosY=rando(0,gameWindowHeight),speedX=rando(-10,10),speedY=rando(-10,10)))
 
 
-for i in range(16):
+for i in range(10):
     spawnEnemy()
 
 def createTerrain():
     terrain.append(TerrainClass(screen, 200, 200,200,20))
     terrain.append(TerrainClass(screen, 400, 200,20,200))
+    terrain.append(TerrainClass(screen, 600, 400,20,200))
 
 createTerrain()
 
