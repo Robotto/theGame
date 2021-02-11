@@ -1,5 +1,6 @@
 import pygame
 import os
+
 pygame.init()
 pygame.mixer.init(frequency=44100, size=-16, channels=6, buffer=2048)
 font = pygame.font.Font('freesansbold.ttf', 32)
@@ -16,8 +17,9 @@ from Terrain import TerrainClass
 from random import randint as rando
 clock = pygame.time.Clock()
 
-gameWindowHeight=800
-gameWindowWidth=600
+#gameWindowHeight=800
+#gameWindowWidth=600
+
 
 terrain=[]
 enemies=[]
@@ -32,29 +34,41 @@ try:
 except:
     print("highScoreFile not found, resetting to 0.")
 
-screen = pygame.display.set_mode((gameWindowWidth, gameWindowHeight))
+#get resolution info from hardware:
+gameWindowWidth, gameWindowHeight = pygame.display.Info().current_w, pygame.display.Info().current_h
+
+#instead of a screen i use a surface, so that i can scale it down to different resolutions from max (1920x1080)
+surface = pygame.Surface((1920, 1080))
+display = pygame.display.set_mode((gameWindowWidth, gameWindowHeight)) #go fullscreen to any resolution
+
+
+
+def createTerrain():
+    terrain.append(TerrainClass(surface, 200, 200, 200, 20))
+    terrain.append(TerrainClass(surface, 400, 200, 20, 200))
+    terrain.append(TerrainClass(surface, 600, 400, 20, 200))
+
+createTerrain()
+
+
+playerObject = PlayerClass(surface, xpos=100, ypos=100, terrainCollection=terrain)
 
 
 def collisionChecker(firstGameObject, secondGameObject):
         if firstGameObject.x + firstGameObject.width > secondGameObject.x and firstGameObject.x < secondGameObject.x + secondGameObject.width and firstGameObject.y + firstGameObject.height > secondGameObject.y and firstGameObject.y < secondGameObject.y + secondGameObject.height:
             return True
 
+enemyMaxSpeed = 15
+numberOfEnemies = 10
 def spawnEnemy():
-    enemies.append(EnemyClass(screen,spawnPosX=rando(0,gameWindowWidth),spawnPosY=rando(0,gameWindowHeight),speedX=rando(-10,10),speedY=rando(-10,10)))
+    enemies.append(EnemyClass(surface, spawnPosX=rando(0, gameWindowWidth), spawnPosY=rando(0, gameWindowHeight), speedX=rando(-enemyMaxSpeed, enemyMaxSpeed), speedY=rando(-enemyMaxSpeed, enemyMaxSpeed)))
+    if collisionChecker(playerObject,enemies[-1]):
+        enemies.pop()
+        spawnEnemy()
 
-
-for i in range(10):
+for i in range(numberOfEnemies):
     spawnEnemy()
 
-def createTerrain():
-    terrain.append(TerrainClass(screen, 200, 200,200,20))
-    terrain.append(TerrainClass(screen, 400, 200,20,200))
-    terrain.append(TerrainClass(screen, 600, 400,20,200))
-
-createTerrain()
-
-
-playerObject = PlayerClass(screen,xpos=100, ypos=100,terrainCollection=terrain)
 
 
 done = False
@@ -79,7 +93,7 @@ while not done:
                 playerObject.xSpeed += playerObject.maxSpeed
                 #Skud:                          .. Men kun når spilleren bevæger sig:
             if event.key == pygame.K_SPACE: #and (playerObject.xSpeed !=0 or playerObject.ySpeed !=0):
-                shots.append(ShotClass(screen,spawnPosX=playerObject.x+playerObject.width/2, spawnPosY=playerObject.y+playerObject.height/2, playerSpeedX=playerObject.xSpeed, playerSpeedY=playerObject.ySpeed))
+                shots.append(ShotClass(surface, spawnPosX=playerObject.x + playerObject.width / 2, spawnPosY=playerObject.y + playerObject.height / 2, playerSpeedX=playerObject.xSpeed, playerSpeedY=playerObject.ySpeed))
         #KEY RELEASES:
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_UP:
@@ -128,15 +142,15 @@ while not done:
             spawnEnemy()
 
     #DRAW GAME OBJECTS:
-    screen.fill((0, 0, 0)) #blank screen. (or maybe draw a background)
+    surface.fill((0, 0, 0)) #blank screen. (or maybe draw a background)
     playerObject.draw()
 
     #Score:                                                 antialias?, color
     text = font.render('SCORE: ' + str(playerObject.points), True,(0, 255, 0))
-    screen.blit(text,(0,0))
+    surface.blit(text, (0, 0))
 
     text = font.render('HIGHSCORE: ' + str(highScore), True, (255, 0, 0))
-    screen.blit(text, (300,0))
+    surface.blit(text, (300, 0))
 
     for shot in shots:
         shot.draw()
@@ -147,6 +161,8 @@ while not done:
     for tile in terrain:
         tile.draw()
 
+    #push the scaled surface to the actual display:
+    display.blit(pygame.transform.scale(surface, (gameWindowWidth, gameWindowHeight)), (0, 0))
     pygame.display.flip()
     clock.tick(60)
 

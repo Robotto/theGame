@@ -1,5 +1,6 @@
 import pygame
 import os
+
 class ShotClass:
 
     width=5
