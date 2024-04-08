@@ -7,8 +7,8 @@ class EnemyClass:
     height=16
     color=(255 , 0, 128)
 
-    #sfxPath = os.path.normpath(os.path.join('assets', 'sfx', 'plingpling.wav'))
-    #effect = pygame.mixer.Sound(sfxPath)
+    sfxPath = os.path.normpath(os.path.join('assets', 'sfx', 'plingpling.wav'))
+    effect = pygame.mixer.Sound(sfxPath)
 
     def __init__(self, screen, spawnPosX, spawnPosY, speedX, speedY):
         self.x = spawnPosX
@@ -18,12 +18,11 @@ class EnemyClass:
         self.theScreen=screen
 
     def update(self):
-        pass
         #self.x+=self.xSpeed
-        #self.y+=self.ySpeed
+        self.y += abs(self.ySpeed)
 
     def draw(self):
         pygame.draw.rect(self.theScreen, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
 
-    #def playSound(self):
-    #    self.effect.play()
+    def playSound(self):
+        self.effect.play()

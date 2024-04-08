@@ -9,15 +9,16 @@ pygame.init()
 #musicPath = os.path.normpath(os.path.join('assets', 'music','VicePoint.mp3'))
 #pygame.mixer.music.load(musicPath) #https://soundcloud.com/synthwave80s/01-vice-point
 #pygame.mixer.music.play(-1)
+
 from Player import PlayerClass
 #from Shot import ShotClass
 from Enemy import EnemyClass
-#from Terrain import TerrainClass
+from Terrain import TerrainClass
 
 from random import randint as rando
 clock = pygame.time.Clock()
-#gameWindowHeight=800
-#gameWindowWidth=600
+gameWindowHeight=1920
+gameWindowWidth=1080
 
 
 #terrain=[]
@@ -39,7 +40,7 @@ enemies=[]
 #get resolution info from hardware:
 gameWindowWidth, gameWindowHeight = pygame.display.Info().current_w, pygame.display.Info().current_h
 #instead of a screen i use a surface, so that i can scale it down to different resolutions from max (1920x1080)
-surface = pygame.Surface((1920, 1080))
+surface = pygame.Surface((gameWindowWidth, gameWindowHeight))
 display = pygame.display.set_mode((gameWindowWidth, gameWindowHeight)) #go fullscreen to any resolution
 #def createTerrain():
 #    terrain.append(TerrainClass(surface, 200, 200, 200, 20))
@@ -47,19 +48,19 @@ display = pygame.display.set_mode((gameWindowWidth, gameWindowHeight)) #go fulls
 #    terrain.append(TerrainClass(surface, 600, 400, 20, 200))
 
 #createTerrain()
-playerObject = PlayerClass(surface, xpos=100, ypos=100)#, terrainCollection=terrain)
+playerObject = PlayerClass(surface, xpos=100, ypos=100)#), terrainCollection=terrain)
 
 #COLLISION CHECKER tager imod to gameobjekter og returnrer true, hvis de rører hinanden:
-def collisionChecker(firstGameObject, secondGameObject):
-        if firstGameObject.x + firstGameObject.width > secondGameObject.x and\
-                firstGameObject.x < secondGameObject.x + secondGameObject.width and\
-                firstGameObject.y + firstGameObject.height > secondGameObject.y and\
-                firstGameObject.y < secondGameObject.y + secondGameObject.height:
-            return True
-        return False
+#def collisionChecker(firstGameObject, secondGameObject):
+#        if firstGameObject.x + firstGameObject.width > secondGameObject.x and\
+#                firstGameObject.x < secondGameObject.x + secondGameObject.width and\
+#                firstGameObject.y + firstGameObject.height > secondGameObject.y and\
+#                firstGameObject.y < secondGameObject.y + secondGameObject.height:
+#            return True
+#        return False
 
 enemyMaxSpeed = 15
-number_of_enemies = 5
+number_of_enemies = 12
 def spawnEnemy():
     enemies.append(EnemyClass(surface,
                               spawnPosX=rando(0, gameWindowWidth),
@@ -67,9 +68,9 @@ def spawnEnemy():
                               speedX=rando(-enemyMaxSpeed, enemyMaxSpeed),
                               speedY=rando(-enemyMaxSpeed, enemyMaxSpeed))
                    )
-    #if collisionChecker(playerObject,enemies[-1]):
-    #    enemies.pop()
-    #    spawnEnemy()
+#    if collisionChecker(playerObject,enemies[-1]):
+#        enemies.pop()
+#        spawnEnemy()
 #TODO:Markus hey man husk at tjekke todos
 #TODO:Mark
 for i in range(number_of_enemies):
@@ -94,8 +95,8 @@ while not done:
             if event.key == pygame.K_RIGHT:
                 playerObject.xSpeed += playerObject.maxSpeed
                 #Skud:                          .. Men kun når spilleren bevæger sig:
-            #if event.key == pygame.K_SPACE: #and (playerObject.xSpeed !=0 or playerObject.ySpeed !=0):
-            #    shots.append(ShotClass(surface, spawnPosX=playerObject.x + playerObject.width / 2, spawnPosY=playerObject.y + playerObject.height / 2, playerSpeedX=playerObject.xSpeed, playerSpeedY=playerObject.ySpeed))
+#            if event.key == pygame.K_SPACE and (playerObject.xSpeed !=0 or playerObject.ySpeed !=0):
+#                shots.append(ShotClass(surface, spawnPosX=playerObject.x + playerObject.width / 2, spawnPosY=playerObject.y + playerObject.height / 2, playerSpeedX=playerObject.xSpeed, playerSpeedY=playerObject.ySpeed))
         #KEY RELEASES:
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_UP:
@@ -121,18 +122,18 @@ while not done:
             enemyIsDead=True
 #        for shot in shots:
 #            if collisionChecker(shot,enemy):
- #               enemyIsDead=True
- #               shots.remove(shot)
- #               playerObject.points +=1
- #               enemy.playSound()
- #               #print('Points:',playerObject.points)
- #               if playerObject.points > highScore:
- #                   highScore = playerObject.points
- #       if collisionChecker(enemy,playerObject):
- #           playerObject.collisionSFX.play()
- #           print("OUCH!")
+#                enemyIsDead=True
+#                shots.remove(shot)
+#                playerObject.points +=1
+#                enemy.playSound()
+#                print('Points:',playerObject.points)
+#                if playerObject.points > highScore:
+#                    highScore = playerObject.points
+#        if collisionChecker(enemy,playerObject):
+#            playerObject.collisionSFX.play()
+#            print("OUCH!")
 
- #           playerObject.points=0
+            playerObject.points=0
         if enemyIsDead:
             enemies.remove(enemy)
             spawnEnemy()
@@ -150,8 +151,8 @@ while not done:
 #    text = font.render('SCORE: ' + str(playerObject.points), True,(0, 255, 0))
 #    surface.blit(text, (0, 0))
 
-    #text = highScoreFont.render('HIGHSCORE: THE HIGHEST POSSIBLE SCORE', True, (255, 0, 0))
- #   surface.blit(text, (gameWindowWidth/2-text.get_width()/2, gameWindowHeight/2))
+#    text = highScoreFont.render('HIGHSCORE: THE HIGHEST POSSIBLE SCORE', True, (255, 0, 0))
+#    surface.blit(text, (gameWindowWidth/2-text.get_width()/2, gameWindowHeight/2))
     clock.tick(60)
     #push the scaled surface to the actual display:
     display.blit(pygame.transform.scale(surface, (gameWindowWidth, gameWindowHeight)), (0, 0))
