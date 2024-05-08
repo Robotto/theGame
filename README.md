@@ -1,1 +1,1 @@
-![pictures/big brain]
+![markdown sucks](pictures/big_brain.jpg)
