@@ -1,1 +1,1 @@
-![big brain]
+![pictures/big brain]
