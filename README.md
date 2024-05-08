@@ -1,1 +1,1 @@
-![markdown sucks](pictures/big_brain.jpg?s=200)
+<img src="pictures/big_brain.jpg" width="100">
