@@ -1,1 +1,1 @@
-![markdown sucks](pictures/big_brain.jpg | width="100")
+![markdown sucks](pictures/big_brain.jpg?s=200)
