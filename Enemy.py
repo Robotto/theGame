@@ -16,10 +16,16 @@ class EnemyClass:
         self.xSpeed = speedX
         self.ySpeed = speedY
         self.theScreen=screen
+        self.active=True
+        self.stale=False
 
     def update(self):
-        #self.x+=self.xSpeed
-        self.y += abs(self.ySpeed)
+        if self.active:
+            #self.x+=self.xSpeed
+            self.y += abs(self.ySpeed)
+            if self.y+self.height>self.theScreen.get_height():
+                self.active=False
+
 
     def draw(self):
         pygame.draw.rect(self.theScreen, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
