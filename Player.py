@@ -10,18 +10,21 @@ class PlayerClass:
     height=50
     color=(0, 128, 255)
     points=0
+    HP=10
+    makingNet=False
+    netStart=(0,0)
 
-#    sfxPath = os.path.normpath(os.path.join('assets', 'sfx', 'aaw.wav')) #kan også være .ogg eller .mp3
-#    collisionSFX = pygame.mixer.Sound(sfxPath)
+    sfxPath = os.path.normpath(os.path.join('assets', 'sfx', 'aaw.wav')) #kan også være .ogg eller .mp3
+    collisionSFX = pygame.mixer.Sound(sfxPath)
 
 
-    def __init__(self,screen,xpos,ypos):#,terrainCollection):
+    def __init__(self,screen,xpos,ypos,terrainCollection):
         self.x=xpos
         self.y=ypos
         self.theScreen=screen
         self.screenWidth = self.theScreen.get_size()[0] #
         self.screenHeight = self.theScreen.get_size()[1]
-#        self.terrainCollection=terrainCollection
+        self.terrainCollection=terrainCollection
 
     def update(self):
 
@@ -31,13 +34,13 @@ class PlayerClass:
         xWillCollide = False
         yWillCollide = False
 
-#        for tile in self.terrainCollection:
+        for tile in self.terrainCollection:
             #if the player is within the x coordinates of a wall tile, and future Y coordinate is inside the wall:
-#            if self.x + self.width > tile.x and self.x < tile.x + tile.width and self.futureY + self.height > tile.y and self.futureY < tile.y + tile.height:
-#                yWillCollide=True
+            if self.x + self.width > tile.x and self.x < tile.x + tile.width and self.futureY + self.height > tile.y and self.futureY < tile.y + tile.height:
+                yWillCollide=True
             # if the player is within the Y coordinates of a wall tile, and future X coordinate is inside the wall:
-#            if self.y + self.height > tile.y and self.y < tile.y + tile.height and self.futureX + self.width > tile.x and self.futureX < tile.x + tile.width:
-#                xWillCollide=True
+            if self.y + self.height > tile.y and self.y < tile.y + tile.height and self.futureX + self.width > tile.x and self.futureX < tile.x + tile.width:
+                xWillCollide=True
 
         if not xWillCollide:
             self.x = self.futureX
@@ -56,3 +59,6 @@ class PlayerClass:
 
     def draw(self):
         pygame.draw.rect(self.theScreen, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
+        if self.makingNet:
+            pygame.draw.line(self.theScreen, self.color, self.netStart, (self.x, self.y))
+
