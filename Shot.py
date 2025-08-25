@@ -15,6 +15,9 @@ class ShotClass:
         self.y = spawnPosY
         self.xSpeed = playerSpeedX * 3
         self.ySpeed = playerSpeedY * 3
+        if self.xSpeed==0 and self.ySpeed==0:
+            self.width*=3
+            self.height*=3
         self.theScreen=screen
         self.effect.play()
 
