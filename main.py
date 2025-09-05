@@ -10,6 +10,7 @@ from Player import PlayerClass
 from Shot import ShotClass
 from Enemy import EnemyClass
 from Terrain import TerrainClass
+from Net import NetClass
 
 
 font = pygame.font.Font(os.path.join('assets', 'Roboto-Bold.ttf'), 32)
@@ -18,10 +19,10 @@ highScoreFont = pygame.font.Font(os.path.join('assets', 'Roboto-Bold.ttf'), 32)
 controls = {"UP": pygame.K_UP, "DOWN": pygame.K_DOWN, "LEFT": pygame.K_LEFT, "RIGHT": pygame.K_RIGHT}
 terrain=[]
 
-number_of_enemies = 2
+number_of_enemies = 5
 # Liste der skal indeholde AKTIVE enemy objekter:
 enemies = []
-enemyMaxSpeed = 15
+enemyMaxSpeed = 5
 
 shots=[]
 nets=[]
@@ -52,8 +53,8 @@ gameWindowWidth, gameWindowHeight = pygame.display.Info().current_w, pygame.disp
 #instead of a screen i use a surface, so that i can scale it down to different resolutions from max (1920x1080)
 surface = pygame.Surface((gameWindowWidth, gameWindowHeight))
 
-#display = pygame.display.set_mode((gameWindowWidth, gameWindowHeight)) #go fullscreen to any resolution
-display = pygame.display.set_mode((800, 600)) #go fullscreen to any resolution
+display = pygame.display.set_mode((gameWindowWidth, gameWindowHeight)) #go fullscreen to any resolution
+#display = pygame.display.set_mode((800, 600)) #Windowed mode
 playerObject = PlayerClass(surface, xpos=100, ypos=100, terrainCollection=terrain)
 
 
@@ -120,11 +121,12 @@ if __name__==  '__main__':
                         if playerObject.makingNet==False:
                             playerObject.netStart = (playerObject.x,playerObject.y)
                             playerObject.makingNet=True
-                        else: ##TODO: Draw a line from netStart to playerXY
-                            nets.append((playerObject.netStart,(playerObject.x,playerObject.y)))
+                        else: ##TODONE: Draw a line from netStart to playerXY
+                            #nets.append((playerObject.netStart,(playerObject.x,playerObject.y)))
+                            nets.append( NetClass( surface, playerObject.netStart[0],playerObject.netStart[1],playerObject.x,playerObject.y ) )
                             playerObject.makingNet=False
                             for net in nets:
-                                print(net)
+                                print(net.x, net.y,net.width, net.height)
 
             #KEY RELEASES:
             if event.type == pygame.KEYUP:
@@ -165,8 +167,17 @@ if __name__==  '__main__':
                 playerObject.HP-=1
                 playerObject.points=0
                 print(playerObject.HP)
+                enemyIsDead = True
+            for net in nets:
+                if collisionChecker(net,enemy):
+                    enemyIsDead=True
+                    playerObject.points += 1
+                    net.hits+=1
+                    if net.hits>2:
+                        nets.remove(net)
             if enemyIsDead or not enemy.active:
                 enemies.remove(enemy)
+
                 spawnEnemy()
         #DRAW GAME OBJECTS:
         surface.fill((0, 0, 0)) #blank screen. (or maybe draw a background)
@@ -174,8 +185,10 @@ if __name__==  '__main__':
             # TODO: Check if net and enemies collide. Remove both
             ## TODO: Do we need to implement a whole goddamn class to handle collisions with lines?
             ### TODO: Oh look! This could be really pretty: https://www.reddit.com/r/gamedev/comments/4qmfkh/comment/d4ueojk/
+            #### TODO: OOOOOOR.. what if the nets were just rectangles? ... yeah.. that's the easiest way.
 
-           pygame.draw.line(surface, color=(128, 128, 128), start_pos=net[0], end_pos=net[1])
+           #pygame.draw.line(surface, color=(128, 128, 128), start_pos=net[0], end_pos=net[1])
+            net.draw()
 
         playerObject.draw()
         for shot in shots:

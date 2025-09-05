@@ -5,7 +5,7 @@ class PlayerClass:
 
     xSpeed=0
     ySpeed=0
-    maxSpeed=5
+    maxSpeed=8
     width=50
     height=50
     color=(0, 128, 255)
